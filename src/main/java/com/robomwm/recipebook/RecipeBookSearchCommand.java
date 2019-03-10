@@ -1,6 +1,7 @@
 package com.robomwm.recipebook;
 
 import net.md_5.bungee.api.ChatColor;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.text.similarity.FuzzyScore;
 import org.bukkit.Keyed;
 import org.bukkit.command.Command;
@@ -139,7 +140,12 @@ public class RecipeBookSearchCommand implements CommandExecutor, TabCompleter {
         Queue<RecipeMatch> sortedRecipes = sortedSearch(query, true);
         Set<String> names = new LinkedHashSet<>();
         while (!sortedRecipes.isEmpty())
-            names.add(sortedRecipes.poll().getName());
+        {
+            String name = sortedRecipes.poll().getName();
+            if (args.length > 1)
+                name = name.substring(StringUtils.ordinalIndexOf(name, " ", args.length - 1));
+            names.add(name);
+        }
         return new ArrayList<>(names);
     }
 }
