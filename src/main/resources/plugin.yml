@@ -1,0 +1,10 @@
+name: RecipeBook
+description: Wow I can search in my cookbook
+version: ${project.version}-${git.commit.id.abbrev}
+website: http://robomwm.com
+author: RoboMWM
+main: com.robomwm.recipebook.RecipeBook
+api-version: 1.13
+commands:
+  recipebook:
+    aliases: [recipe, recipes, recipesbook]
