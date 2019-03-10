@@ -82,8 +82,9 @@ public class RecipeBookSearchCommand implements CommandExecutor, TabCompleter {
         while (!recipes.isEmpty())
         {
             String name = recipes.peek().getName();
-            Recipe recipe = recipes.poll().getRecipe();
-            builder.add(name).cmd("/showrecipe " + ((Keyed)recipe).getKey(), false).color(ChatColor.AQUA).add("\n");
+            RecipeMatch recipeMatch = recipes.poll();
+            Recipe recipe = recipeMatch.getRecipe();
+            builder.add(name).cmd("/showrecipe " + ((Keyed)recipe).getKey(), false).hover(Integer.toString(recipeMatch.getMatch())).color(ChatColor.AQUA).add("\n");
             if (count++ > 9)
             {
                 count = 0;
@@ -171,6 +172,11 @@ class RecipeMatch implements Comparable<RecipeMatch>
     public String getName()
     {
         return name;
+    }
+
+    public int getMatch()
+    {
+        return match;
     }
 
     //Inverted so higher scores are at head of queue.
