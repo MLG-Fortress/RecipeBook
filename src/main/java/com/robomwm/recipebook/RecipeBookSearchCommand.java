@@ -143,7 +143,7 @@ public class RecipeBookSearchCommand implements CommandExecutor, TabCompleter {
         {
             String name = sortedRecipes.poll().getName();
             if (args.length > 1)
-                name = name.substring(StringUtils.ordinalIndexOf(name, " ", args.length - 1));
+                name = name.substring(StringUtils.ordinalIndexOf(name, " ", args.length - 1) + 1);
             names.add(name);
         }
         return new ArrayList<>(names);
