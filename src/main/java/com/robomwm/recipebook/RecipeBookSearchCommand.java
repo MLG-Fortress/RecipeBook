@@ -2,6 +2,7 @@ package com.robomwm.recipebook;
 
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.commons.text.similarity.FuzzyScore;
 import org.bukkit.Keyed;
 import org.bukkit.command.Command;
@@ -82,6 +83,8 @@ public class RecipeBookSearchCommand implements CommandExecutor, TabCompleter {
         while (!recipes.isEmpty())
         {
             String name = recipes.peek().getName();
+            if (name.length() > 22)
+                name = name.substring(0, 22) + "...";
             RecipeMatch recipeMatch = recipes.poll();
             Recipe recipe = recipeMatch.getRecipe();
             builder.add(name).cmd("/showrecipe " + ((Keyed)recipe).getKey(), false).hover(Integer.toString(recipeMatch.getMatch())).color(ChatColor.AQUA).add("\n");
@@ -108,26 +111,31 @@ public class RecipeBookSearchCommand implements CommandExecutor, TabCompleter {
             if (!(recipe instanceof Keyed))
                 continue;
 
+            int score = 0;
+
             ItemStack result = recipe.getResult();
-            String name;
+            String name = null;
             if (result.hasItemMeta() && result.getItemMeta().hasDisplayName())
+            {
                 name = result.getItemMeta().getDisplayName();
+                score = fuzzyScore.fuzzyScore(name, search);
+            }
             else
             {
                 try
                 {
+                    name = WordUtils.capitalizeFully(result.getType().name().replaceAll("_", " "));
+                    score = Math.max(score, fuzzyScore.fuzzyScore(name, search));
                     name = result.getI18NDisplayName();
+                    score = Math.max(score, fuzzyScore.fuzzyScore(name, search));
                 }
-                catch (Throwable rock)
-                {
-                    name = result.getType().name();
-                }
+                catch (Throwable ignored){}
             }
 
             if (startWith && !name.toLowerCase().startsWith(search.toLowerCase()))
                 continue;
 
-            recipes.add(new RecipeMatch(recipe, name, fuzzyScore.fuzzyScore(name, search)));
+            recipes.add(new RecipeMatch(recipe, name, score));
         }
 
         return recipes;
