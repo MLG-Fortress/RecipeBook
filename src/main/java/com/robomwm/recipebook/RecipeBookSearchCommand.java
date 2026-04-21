@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
-import pw.valaria.bookutil.BookUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -95,7 +94,7 @@ public class RecipeBookSearchCommand implements CommandExecutor, TabCompleter {
             }
         }
 
-        new BookUtil(plugin).openBook(player, builder.toBook());
+        player.openBook(builder.toBook());
 
         return true;
     }

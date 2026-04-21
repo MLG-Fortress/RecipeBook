@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -179,7 +178,7 @@ public class LazyText
      * @param components BaseComponents
      * @return
      */
-    public static List<BaseComponent[]> buildPages(String newPageChar, @Nonnull List<BaseComponent> components)
+    public static List<BaseComponent[]> buildPages(String newPageChar, List<BaseComponent> components)
     {
         List<BaseComponent[]> completedPages = new ArrayList<>();
         List<BaseComponent> workingPage = new ArrayList<>();
